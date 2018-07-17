@@ -105,14 +105,12 @@ gt_function <- function(dataset, pheno, snp){
 
 
 unadjusted_logistic <-function(dataset, pheno, snp, model_formula){
- #test <- glm(as.numeric(dataset[,pheno]) ~ as.numeric(as.factor(dataset[, snp])), family='binomial')
   test <- glm(model_formula, family='binomial', data = dataset)
    return(bind_cols(model = broom::tidy(test) %>% slice(2) %>% mutate(term = "snp_additive_unadjusted"), broom::confint_tidy(test) %>% slice(2)) )
 }
 
 #example: adjusted_logistic(dataset = test_data, pheno = "DIABETES")
 adjusted_logistic <- function(dataset, pheno, snp, model_formula){
-  #test<-glm(as.numeric(dataset[,pheno]) ~ as.numeric( as.factor(dataset[, snp] )) + as.numeric(dataset$AGECOL) + as.factor(dataset$SEX) + dataset$PCA1 + dataset$PCA2 + dataset$PCA3 + dataset$PCA4, family='binomial')
   test <- glm(model_formula, family='binomial', data = dataset)
   return(bind_cols(broom::tidy(test), broom::confint_tidy(test)))
 }
